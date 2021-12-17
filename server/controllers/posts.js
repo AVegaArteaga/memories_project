@@ -18,7 +18,6 @@ export const getPosts = async (reg, res) => {
 export const createPost = async (reg, res) =>{
 
     const post = reg.body;
-
     const newPost = new PostMessage(post);
 
     try {
@@ -33,10 +32,11 @@ export const createPost = async (reg, res) =>{
 export const updatePost = async (req, res) =>{
     const { id: _id  } = req.params;
     const post = req.body; //sent from the front end
-    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No post with that id');
+
+    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No post with that id'); //if mongose ID 
 
     const updatePost = await PostMessage.findByIdAndUpdate(_id, post, {new: true}); //reseive updated post
 
-    res.json(updatePost);
+    res.json(updatePost); //send over updated post
 
 }
