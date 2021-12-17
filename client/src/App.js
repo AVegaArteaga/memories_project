@@ -16,7 +16,7 @@ const App = () => {
     const dispacth = useDispatch();
 
     useEffect(() =>{
-        dispacth(getPosts);
+        dispacth(getPosts());
     }, [dispacth]);
 
     //this is the whole page of the app
