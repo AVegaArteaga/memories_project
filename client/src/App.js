@@ -13,11 +13,11 @@ const App = () => {
 
     const [currentId, setCurrentId] = useState(null);
     const classes = useStyles();
-    const dispacth = useDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() =>{
-        dispacth(getPosts());
-    }, [dispacth]);
+        dispatch(getPosts());
+    }, [dispatch]);
 
     //this is the whole page of the app
     return (
