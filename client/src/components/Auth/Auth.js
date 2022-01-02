@@ -1,6 +1,5 @@
-/* eslint-disable */
 import React, {useState} from 'react'
-import { Avatar, Button, Paper, Grid, Typography, Container, TextField} from '@material-ui/core';
+import { Avatar, Button, Paper, Grid, Typography, Container} from '@material-ui/core';
 import {GoogleLogin} from 'react-google-login';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import useStyles from './styles';
@@ -8,21 +7,36 @@ import Input from './Input';
 import Icon from './icons';
 import { useDispatch } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
+import {signin, signup} from '../../actions/auth';
+const initialState = {firstName: '', lastName: '', email:'', password:'', confirmPassword:''};
+
 const Auth = () => {
-    const classes = useStyles();
-    const [showPassword, setShowPassoword] = useState(false);
+    
+    const [formData, setFormData] = useState(initialState);
     const [isSignup, setIsSignup] = useState(false);
+    const [showPassword, setShowPassoword] = useState(false);
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const classes = useStyles();
     //covic function
     const handleShowPassword = () => setShowPassoword((prevShowPassoword)=> !prevShowPassoword); //toggling it
     
-    const handleSubmit = () =>{
+    const handleSubmit = (e) =>{
+        e.preventDefault();
 
+
+        if(isSignup){
+            dispatch(signup(formData, navigate))
+        } else {
+            dispatch(signin(formData, navigate))
+        }
     };
 
-    const handleChange = () =>{
+    const handleChange = (e) => {
         
+        setFormData({ ...formData,[e.target.name]: e.target.value});
+
     };
     const switchMode = () =>{
         setIsSignup((prevIsSignup) => !prevIsSignup );
@@ -57,12 +71,12 @@ const Auth = () => {
                 <Grid container spacing={6}>
                     { isSignup && (
                         <React.Fragment>
-                            <TextField name="firstName" label="First Name" handleChange={handleChange} autoFocus half/>
-                            <TextField name="firstName" label="Last Name" handleChange={handleChange} half/>
+                            <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half/>
+                            <Input name="lastName"  label="Last Name"  handleChange={handleChange} half/>
                         </React.Fragment>
                     )}
-                    <Input name="email" label="Email Address" handleChange={handleSubmit} type="email"/>
-                    <Input name="password" label="Password" handleChange={handleSubmit} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword}/>
+                    <Input name="email" label="Email Address" handleChange={handleChange} type="email"/>
+                    <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword}/>
                     { isSignup && <Input name="confirmPassword"  label="Repeat Password" handleChange={handleChange} type="password"/>}
 
                 </Grid>
@@ -76,6 +90,7 @@ const Auth = () => {
                     )}
                     onSuccess={googleSuccess}
                     onFailure={googleFailure}
+                    cookiePolicy="single_host_origin"
                 />
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
                     {isSignup ? 'Sign Up!' : 'Sign In!' }
