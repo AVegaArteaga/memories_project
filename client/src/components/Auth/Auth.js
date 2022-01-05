@@ -12,13 +12,13 @@ const initialState = {firstName: '', lastName: '', email:'', password:'', confir
 
 const Auth = () => {
     
-    const [formData, setFormData] = useState(initialState);
-    const [isSignup, setIsSignup] = useState(false);
+    const classes = useStyles();
     const [showPassword, setShowPassoword] = useState(false);
+    const [isSignup, setIsSignup] = useState(false);
+    const [formData, setFormData] = useState(initialState);
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const classes = useStyles();
     //covic function
     const handleShowPassword = () => setShowPassoword((prevShowPassoword)=> !prevShowPassoword); //toggling it
     
@@ -40,7 +40,7 @@ const Auth = () => {
     };
     const switchMode = () =>{
         setIsSignup((prevIsSignup) => !prevIsSignup );
-        handleShowPassword(false);
+        setShowPassoword(false);
     };
 
     const googleSuccess = async (res) => {
